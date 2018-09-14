@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsForNewFeatureBlueprint",
+  "title": "New Feature Blueprint Schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      }
+    },
+    "path": {
+      "type": "string",
+      "format": "path",
+      "description": "The path to create the new feature.",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },      
+    "module":  {
+      "type": "string",
+      "description": "The declaring module.",
+      "alias": "m"
+    },
+    "dataService": {
+      "type": "boolean",
+      "default": true,
+      "description": "Flag to indicate whether an menu service should be generated.",
+      "alias": "ds"
+    }
+  }
+}

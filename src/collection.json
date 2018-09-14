@@ -2,8 +2,10 @@
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
     "new-feature-blueprint": {
+      "alias": ["nf"],
       "description": "Schematic for generating a new feature module.",
-      "factory": "./new-feature-blueprint/index#newFeatureBlueprint"
+      "factory": "./new-feature-blueprint/index#newFeatureBlueprint",
+      "schema": "./new-feature-blueprint/schema.json"
     }
   }
 }
