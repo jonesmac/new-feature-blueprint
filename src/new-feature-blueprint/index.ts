@@ -1,12 +1,31 @@
-import { Rule, SchematicContext, Tree, chain } from '@angular-devkit/schematics';
+import { Rule, SchematicContext, Tree, chain, filter, mergeWith, template, url, branchAndMerge, move, apply} from '@angular-devkit/schematics';
+import { strings } from '@angular-devkit/core';
 import { NewFeatureBlueprintOptions } from './schema';
-// import { testRule } from './test-rule';
 
 export function newFeatureBlueprint(_options: NewFeatureBlueprintOptions): Rule {
-  return chain([
-    (tree: Tree, _context: SchematicContext) => {
-      tree.create(`src/app/test/${_options.name || 'myfile'}.ts`, 'some content');
-      return tree
-    }
-  ]);
+  return (tree: Tree, context: SchematicContext) => {
+    const templateSource = apply(url('./files'), [
+      filterTemplates(_options),
+      template({
+        ...strings,
+        ..._options
+      }),
+      move(_options.path || '')
+    ]);
+  
+    const rule = chain([
+      branchAndMerge(chain([
+        mergeWith(templateSource)
+      ]))
+    ]);
+  
+    return rule(tree, context);
+  }
+}
+
+function filterTemplates(options: NewFeatureBlueprintOptions): Rule {
+  if (options.dataService) {
+    return filter(path => !path.match(/\.service\.ts$/) && !path.match(/\.bak$/));
+  }
+  return filter(path => !path.match(/\.bak$/));
 }
