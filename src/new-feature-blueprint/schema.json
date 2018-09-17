@@ -11,6 +11,10 @@
         "index": 0
       }
     },
+    "basic": {
+      "type": "boolean",
+      "default": false
+    },
     "path": {
       "type": "string",
       "format": "path",
@@ -31,9 +35,11 @@
     },
     "dataService": {
       "type": "boolean",
-      "default": true,
       "description": "Flag to indicate whether an menu service should be generated.",
-      "alias": "ds"
+      "alias": "ds",
+      "$default": {
+        "$source": "argv"
+      }
     }
   }
 }

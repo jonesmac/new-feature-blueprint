@@ -4,28 +4,27 @@ import { NewFeatureBlueprintOptions } from './schema';
 
 export function newFeatureBlueprint(_options: NewFeatureBlueprintOptions): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    const templateSource = apply(url('./files'), [
-      // filterTemplates(_options),
-      template({
-        ...strings,
-        ..._options
-      }),
-      move(_options.path || 'src/app')
-    ]);
-  
-    const rule = chain([
-      branchAndMerge(chain([
-        mergeWith(templateSource)
-      ]))
-    ]);
-  
-    return rule(tree, context);
+    if (_options.basic) {
+      tree.create(`src/app/${_options.name || 'basic'}.ts`, `console.log('Hello World');`);
+      return tree;
+    } else {
+      // Take a set of files and apply a series of rules to them
+      const templateSource = apply(url('./files'), [
+        template({
+          // Helpful methods for manipulating the name of the schema (dasherize, classify, etc.)
+          ...strings,
+          ..._options
+        }),
+        move(_options.path || 'src/app')
+      ]);
+    
+      const rule = chain([
+        branchAndMerge(chain([
+          mergeWith(templateSource)
+        ]))
+      ]);
+
+      return rule(tree, context);
+    }
   }
 }
-
-// function filterTemplates(options: NewFeatureBlueprintOptions): Rule {
-//   if (options.dataService) {
-//     return filter(path => !path.match(/\.service\.ts$/) && !path.match(/\.bak$/));
-//   }
-//   return filter(path => !path.match(/\.bak$/));
-// }

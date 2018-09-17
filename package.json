@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "description": "A blank schematics",
   "scripts": {
+    "start": "npm run build && schematics new-feature-blueprint:new-feature-blueprint",
+    "start-test": "npm run build && schematics .:new-feature-blueprint",
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine src/**/*_spec.js"
   },
